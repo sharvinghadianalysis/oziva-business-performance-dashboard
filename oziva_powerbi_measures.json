@@ -1,0 +1,54 @@
+{
+    "project": "Oziva Sales Dashboard",
+    "measures": [
+        {
+            "name": "Total Units Sold",
+            "dax": "Total Units Sold = SUM(Sales[Units_Sold])"
+        },
+        {
+            "name": "Total Revenue",
+            "dax": "Total Revenue = COALESCE(SUM(Sales[Revenue]), 0)"
+        },
+        {
+            "name": "Total Profit",
+            "dax": "Total Profit = SUM('Sales'[Revenue]) - SUM('Sales'[Cost]) - SUM('Sales'[Ad_Spend])"
+        },
+        {
+            "name": "ROI",
+            "dax": "ROI = DIVIDE(SUM('Sales'[Revenue]) - SUM('Sales'[Cost]) - SUM('Sales'[Ad_Spend]), SUM('Sales'[Ad_Spend]), 0)"
+        },
+        {
+            "name": "Profit Margin %",
+            "dax": "Profit Margin % = DIVIDE([Total Profit], SUM('Sales'[Revenue]), 0)"
+        },
+        {
+            "name": "MoM Growth %",
+            "dax": "MoM Growth % = DIVIDE([Total Revenue] - CALCULATE([Total Revenue], DATEADD(Sales[Order_Date], -1, MONTH)), CALCULATE([Total Revenue], DATEADD(Sales[Order_Date], -1, MONTH)))"
+        },
+        {
+            "name": "Revenue YTD",
+            "dax": "Revenue YTD = CALCULATE(TOTALYTD([Total Revenue], 'Date'[Date]), ALL('Date'), VALUES('Date'[Year]))"
+        },
+        {
+            "name": "Selected Metric",
+            "dax": "Selected Metric = SWITCH(SELECTEDVALUE(Metrics[Metrics]), 'Revenue', [Total Revenue], 'Profit', [Total Profit], 'Units Sold', [Total Units Sold], 'ROI', [ROI])"
+        }
+    ],
+    "calculated_columns": [
+        {
+            "name": "Profit Column",
+            "table": "Sales",
+            "dax": "Profit Column = Sales[Revenue] - Sales[Cost] - Sales[Ad_Spend]"
+        },
+        {
+            "name": "Month Name",
+            "table": "Date",
+            "dax": "Month Name = FORMAT('Date'[Date], \"MMM\")"
+        },
+        {
+            "name": "Year Month",
+            "table": "Date",
+            "dax": "Year Month = FORMAT('Date'[Date], \"YYYY-MMM\")"
+        }
+    ]
+}
